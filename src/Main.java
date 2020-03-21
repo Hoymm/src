@@ -1,14 +1,14 @@
-import java.util.Random;
-import java.util.stream.IntStream;
+import restaurants.chinese.HoanKiem;
+import restaurants.restaurant.Restaurant;
+import simulator.OrdersSimulator;
 
 public class Main {
   public static void main(String[] args) {
-    Restaurant restaurant = new Restaurant();
-    restaurant.openRestaurant();
+    Restaurant restaurant = new HoanKiem();
+//    Restaurant restaurant = new LoveSchabowe();
+    restaurant.open();
 
-    Dish[] dishes = Dish.values();
-    IntStream.generate(() -> new Random().nextInt(dishes.length))
-             .limit(20)
-             .forEach(i -> restaurant.makeOrder(dishes[i%dishes.length]));
+    OrdersSimulator ordersSimulator = new OrdersSimulator(restaurant);
+    ordersSimulator.simulate(20);
   }
 }
