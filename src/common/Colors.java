@@ -1,8 +1,10 @@
+package common;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-enum Color {
+public enum Colors {
   GREEN("\033[0;32m"),
   YELLOW("\033[0;33m"),
   BLUE("\033[0;34m"),
@@ -13,10 +15,10 @@ enum Color {
 
   private String stringColor;
   private static int colorIdCounter = 0;
-  private static List<Color> availableColors =
-          Arrays.stream(Color.values()).filter(c -> !c.equals(RESET)).collect(Collectors.toList());
+  private static List<Colors> availableColors =
+          Arrays.stream(Colors.values()).filter(c -> !c.equals(RESET)).collect(Collectors.toList());
 
-  Color(String stringColor) {
+  Colors(String stringColor) {
     this.stringColor = stringColor;
   }
 
@@ -25,7 +27,7 @@ enum Color {
     return this.stringColor;
   }
 
-  public static Color getNextColor() {
+  public static Colors getNextColor() {
     return availableColors.get(colorIdCounter++ % availableColors.size());
   }
 }
