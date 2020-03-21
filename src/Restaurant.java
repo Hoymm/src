@@ -7,17 +7,20 @@ import java.util.stream.Stream;
 class Restaurant {
   private OrderMaker orderMaker;
   private List<OrderProcessingStation> orderProcessingStations;
-  Queue<Order> orders;
+  Queue<Order> orders; // TODO this should be private
   private boolean isOpen;
 
   Restaurant() {
     this.orderMaker = new OrderMaker();
     this.orders = new ArrayDeque<>();
+    prepareWorkStations();
+  }
 
+  private void prepareWorkStations() {
     orderProcessingStations =
         Stream.generate(() -> new OrderProcessingStation(this))
-            .limit(3)
-            .collect(Collectors.toList());
+              .limit(3)
+              .collect(Collectors.toList());
   }
 
   void openRestaurant() {
@@ -25,8 +28,9 @@ class Restaurant {
     this.orderProcessingStations.forEach(Thread::start);
   }
 
-  OrderInfo makeOrder(Dish order) {
-    Order newOrder = this.orderMaker.makeOrder(order);
+  // TODO this method violates SRP.
+  OrderInfo makeOrder(Dish dish) {
+    Order newOrder = this.orderMaker.makeOrder(dish);
     orders.add(newOrder);
     System.out.printf("New order placed (ID: %2d): %20s\n", newOrder.getId(), newOrder.getDish());
     return newOrder;
