@@ -7,17 +7,17 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.IntStream;
 
-public class OrdersSimulator<Dishes extends Enum<Dishes>> {
-  private RestaurantClientApi<Dishes> restaurantClientApi;
+public class OrdersSimulator {
+  private RestaurantClientApi restaurantClientApi;
 
-  public OrdersSimulator(RestaurantClientApi<Dishes> restaurantClientApi) {
+  public OrdersSimulator(RestaurantClientApi restaurantClientApi) {
     this.restaurantClientApi = restaurantClientApi;
   }
 
   public void simulate(int ordersNumber) {
-    List<Dishes> dishes = restaurantClientApi.getDishesList();
+    List dishes = restaurantClientApi.getDishesList();
     IntStream.generate(() -> new Random().nextInt(dishes.size()))
-        .limit(20)
+        .limit(ordersNumber)
         .forEach(
             i ->
                 restaurantClientApi.makeOrder(

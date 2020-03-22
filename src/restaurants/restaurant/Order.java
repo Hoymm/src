@@ -2,12 +2,12 @@ package restaurants.restaurant;
 
 import java.util.List;
 
-public class Order<Dishes extends Enum<Dishes>> implements OrderInfo<Dishes> {
+public class Order implements OrderInfo {
   private int id;
-  private List<Dishes> dishes;
+  private List dishes;
   private OrderState orderState;
 
-  Order(List<Dishes> dishes, int id) {
+  Order(List dishes, int id) {
     this.dishes = dishes;
     this.id = id;
     this.orderState = OrderState.PLACED;
@@ -24,7 +24,7 @@ public class Order<Dishes extends Enum<Dishes>> implements OrderInfo<Dishes> {
   }
 
   @Override
-  public List<Dishes> getDishes() {
+  public List getDishes() {
     return this.dishes;
   }
 
