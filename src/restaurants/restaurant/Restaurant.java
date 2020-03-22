@@ -8,13 +8,10 @@ public abstract class Restaurant implements RestaurantClientApi, RestaurantManag
   private final OrderMaker orderMaker;
   private final List<OrderProcessingStation> orderProcessingStations;
   final Queue<Order> ordersToBePrepared; // TODO this should be private
-  private final Map<OrderInfo, Order> preparedOrders;
 
-  public Restaurant(int howManyProcessingStations) {
+  protected Restaurant(int howManyProcessingStations) {
     this.orderMaker = new OrderMaker();
     this.ordersToBePrepared = new ArrayDeque<>();
-    this.preparedOrders = new HashMap<>();
-
     orderProcessingStations =
             Stream.generate(() -> new OrderProcessingStation(this))
                   .limit(howManyProcessingStations)
@@ -31,17 +28,10 @@ public abstract class Restaurant implements RestaurantClientApi, RestaurantManag
     this.orderProcessingStations.forEach(OrderProcessingStation::close);
   }
 
-  // TODO this method violates SRP.
   @Override
-  public OrderInfo makeOrder(List dishes) {
+  public void makeOrder(List dishes) {
     Order newOrder = this.orderMaker.makeOrder(dishes);
     ordersToBePrepared.add(newOrder);
-    System.out.printf("New order placed (ID: %2d): %20s\n", newOrder.getId(), newOrder.getDishes());
-    return newOrder;
-  }
-
-  @Override
-  public void retrieveOrder(OrderInfo orderInfo) {
-    System.out.printf("%s został odebrany przez klienta.", preparedOrders.remove(orderInfo));
+    System.out.printf("New order placed %s\n", newOrder);
   }
 }

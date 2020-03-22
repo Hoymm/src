@@ -13,10 +13,10 @@ public enum Colors {
   WHITE("\033[0;37m"),
   RESET("\033[0m");
 
-  private String stringColor;
+  private final String stringColor;
   private static int colorIdCounter = 0;
-  private static List<Colors> availableColors =
-          Arrays.stream(Colors.values()).filter(c -> !c.equals(RESET)).collect(Collectors.toList());
+  private static final List<Colors> availableColors =
+      Arrays.stream(Colors.values()).filter(c -> !c.equals(RESET)).collect(Collectors.toList());
 
   Colors(String stringColor) {
     this.stringColor = stringColor;
