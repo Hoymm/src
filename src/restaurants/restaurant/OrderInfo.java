@@ -2,7 +2,7 @@ package restaurants.restaurant;
 
 import java.util.List;
 
-interface OrderInfo <Dishes extends Enum<Dishes>> {
+interface OrderInfo  {
     int getId();
-    List<Dishes> getDishes();
+    List getDishes();
 }
