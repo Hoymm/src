@@ -4,8 +4,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public abstract class Restaurant<T extends Enum<T>> implements RestaurantClientApi<T>, RestaurantManagersApi {
-  private final OrderMaker<T> orderMaker;
+public abstract class Restaurant<Dishes extends Enum<Dishes>> implements RestaurantClientApi<Dishes>, RestaurantManagersApi {
+  private final OrderMaker<Dishes> orderMaker;
   private final List<OrderProcessingStation> orderProcessingStations;
   final Queue<Order> ordersToBePrepared; // TODO this should be private
   private final Map<OrderInfo, Order> preparedOrders;
@@ -33,7 +33,7 @@ public abstract class Restaurant<T extends Enum<T>> implements RestaurantClientA
 
   // TODO this method violates SRP.
   @Override
-  public OrderInfo makeOrder(List<T> dishes) {
+  public OrderInfo makeOrder(List<Dishes> dishes) {
     Order newOrder = this.orderMaker.makeOrder(dishes);
     ordersToBePrepared.add(newOrder);
     System.out.printf("New order placed (ID: %2d): %20s\n", newOrder.getId(), newOrder.getDishes());
