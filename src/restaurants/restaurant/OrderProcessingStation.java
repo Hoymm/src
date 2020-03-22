@@ -5,14 +5,14 @@ import common.Colors;
 import java.util.NoSuchElementException;
 import java.util.Random;
 
-class OrderProcessingStation <T extends Enum<T>> {
+class OrderProcessingStation <Dishes extends Enum<Dishes>> {
   private static int stationNumberCounter = 1;
   private final int stationNumber;
-  private final Restaurant <T> restaurant; // TODO remove this dependency.
+  private final Restaurant <Dishes> restaurant; // TODO remove this dependency.
   private final Colors color;
   private boolean isOpen;
 
-  OrderProcessingStation(Restaurant <T> restaurant) {
+  OrderProcessingStation(Restaurant <Dishes> restaurant) {
     this.restaurant = restaurant;
     this.color = Colors.getNextColor();
     this.stationNumber = stationNumberCounter++;
