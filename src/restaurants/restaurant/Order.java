@@ -2,9 +2,9 @@ package restaurants.restaurant;
 
 import java.util.List;
 
-public class Order implements OrderInfo {
-  private int id;
-  private List dishes;
+public class Order {
+  private final int id;
+  private final List dishes;
   private OrderState orderState;
 
   Order(List dishes, int id) {
@@ -19,17 +19,6 @@ public class Order implements OrderInfo {
 
   @Override
   public String toString() {
-    return String.format(
-        "\trestaurants.restaurant.Order number %2d (%s) is %10s", id, dishes, orderState);
-  }
-
-  @Override
-  public List getDishes() {
-    return this.dishes;
-  }
-
-  @Override
-  public int getId() {
-    return id;
+    return String.format("(ID: %2d): %s is %-15s", id, dishes, orderState);
   }
 }

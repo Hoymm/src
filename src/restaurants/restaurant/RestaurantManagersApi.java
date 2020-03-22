@@ -1,6 +1,6 @@
 package restaurants.restaurant;
 
-public interface RestaurantManagersApi {
+interface RestaurantManagersApi {
     void open();
     void close();
 }
