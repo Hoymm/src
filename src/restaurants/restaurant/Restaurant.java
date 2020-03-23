@@ -4,32 +4,51 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public abstract class Restaurant implements RestaurantClientApi, RestaurantManagersApi {
-  private final List<Workplace> workplaces;
-  final Queue<Order> ordersToBePrepared; // TODO this should be private
+public abstract class Restaurant
+    implements RestaurantClientApi, RestaurantManagersApi, WorkplaceReleaseNotifier {
+  final Queue<Order> waitingOrders; // TODO this should be private
+  private final Queue<Workplace> availableWorkplaces;
 
   protected Restaurant(int howManyProcessingStations) {
-    this.ordersToBePrepared = new ArrayDeque<>();
-    workplaces =
-            Stream.generate(() -> new Workplace(this))
-                  .limit(howManyProcessingStations)
-                  .collect(Collectors.toList());
+    this.waitingOrders = new ArrayDeque<>();
+    availableWorkplaces =
+        Stream.generate(() -> new Workplace(this))
+            .limit(howManyProcessingStations)
+            .collect(Collectors.toCollection(ArrayDeque::new));
   }
 
   @Override
   public void open() {
-    this.workplaces.forEach(Workplace::open);
+    System.out.println("RESTAURANT OPENED.");
   }
 
   @Override
   public void close() {
-    this.workplaces.forEach(Workplace::close);
+    System.out.println("RESTAURANT CLOSED.");
   }
 
   @Override
-  public void makeOrder(List <String> dishes) {
+  public void makeOrder(List<String> dishes) {
     Order newOrder = OrderMaker.createNewOrder(dishes);
-    ordersToBePrepared.add(newOrder);
+    Optional<Workplace> availableWorkplace = Optional.ofNullable(availableWorkplaces.poll());
+
+    if (availableWorkplace.isPresent()){
+      availableWorkplace.get().processOrder(newOrder);
+    }
+    else {
+      waitingOrders.add(newOrder);
+    }
+
     System.out.printf("New order placed %s\n", newOrder);
+  }
+
+  @Override
+  public void notify(Workplace workplace) {
+    Optional<Order> order = Optional.ofNullable(waitingOrders.poll());
+    if (order.isPresent()) {
+      workplace.processOrder(order.get());
+    } else {
+      availableWorkplaces.add(workplace);
+    }
   }
 }
