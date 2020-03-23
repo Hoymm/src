@@ -1,5 +1,6 @@
 package restaurants.restaurant;
 
+import common.Colors;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -21,13 +22,15 @@ public abstract class Restaurant implements RestaurantClientApi, WorkplaceReleas
     Order newOrder = OrderMaker.createNewOrder(dishes);
     Optional<Workplace> availableWorkplace = Optional.ofNullable(availableWorkplaces.poll());
 
+    String blackBold = "\033[1;30m";
+    System.out.printf("%s%s%s\n\n", blackBold, newOrder, Colors.RESET);
+
     if (availableWorkplace.isPresent()) {
       availableWorkplace.get().processOrder(newOrder);
     } else {
       waitingOrders.add(newOrder);
     }
 
-    System.out.printf("New order placed %s\n", newOrder);
   }
 
   @Override
