@@ -5,8 +5,8 @@ import java.util.List;
 import restaurants.restaurant.Restaurant;
 
 public class HoanKiem extends Restaurant {
-  public HoanKiem() {
-    super(12);
+  public HoanKiem(int howManyProcessingStations) {
+    super(howManyProcessingStations);
   }
 
   @Override
