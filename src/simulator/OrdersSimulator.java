@@ -20,7 +20,7 @@ public class OrdersSimulator {
     for (int i = 0; i < ordersNumber; i++) {
       List<String> randomDishes =
           Stream.generate(() -> random.nextInt(dishes.size()))
-              .limit(random.nextInt(dishes.size()) + 1)
+              .limit(random.nextInt(dishes.size()) / 2 + 1)
               .map(dishes::get)
               .collect(Collectors.toList());
       restaurantClientApi.makeOrder(randomDishes);
