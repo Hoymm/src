@@ -25,7 +25,7 @@ class Workplace {
               order.setOrderState(OrderState.IS_BEING_PREPARED);
               printOrderStatus(order);
 
-              tryToSleep(new Random().nextInt(8000));
+              tryToSleep(new Random().nextInt(20000));
 
               order.setOrderState(OrderState.READY_TO_PICKUP);
               printOrderStatus(order);
