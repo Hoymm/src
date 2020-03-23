@@ -50,7 +50,7 @@ class Workplace {
   }
 
   private void processOrder() {
-    Order order = restaurant.ordersToBePrepared.remove();
+    Order order = restaurant.waitingOrders.remove();
     order.setOrderState(OrderState.IS_BEING_PREPARED);
     printOrderStatus(order);
 
