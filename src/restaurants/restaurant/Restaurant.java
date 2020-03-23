@@ -5,11 +5,11 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public abstract class Restaurant implements RestaurantClientApi, RestaurantManagersApi {
+  final Queue<Order> waitingOrders; // TODO this should be private
   private final Queue<Workplace> availableWorkplaces;
-  final Queue<Order> ordersToBePrepared; // TODO this should be private
 
   protected Restaurant(int howManyProcessingStations) {
-    this.ordersToBePrepared = new ArrayDeque<>();
+    this.waitingOrders = new ArrayDeque<>();
     availableWorkplaces =
         Stream.generate(() -> new Workplace(this))
             .limit(howManyProcessingStations)
@@ -29,7 +29,7 @@ public abstract class Restaurant implements RestaurantClientApi, RestaurantManag
   @Override
   public void makeOrder(List<String> dishes) {
     Order newOrder = OrderMaker.createNewOrder(dishes);
-    ordersToBePrepared.add(newOrder);
+    waitingOrders.add(newOrder);
     System.out.printf("New order placed %s\n", newOrder);
   }
 }
