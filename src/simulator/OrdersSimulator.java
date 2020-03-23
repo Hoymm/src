@@ -17,13 +17,23 @@ public class OrdersSimulator {
   }
 
   public void simulate(int ordersNumber) {
-    for (int i = 0; i < ordersNumber; i++) {
-      List<String> randomDishes =
-          Stream.generate(() -> random.nextInt(dishes.size()))
-              .limit(random.nextInt(dishes.size()) / 2 + 1)
-              .map(dishes::get)
-              .collect(Collectors.toList());
-      restaurantClientApi.makeOrder(randomDishes);
-    }
+    new Thread(
+            () -> {
+              for (int i = 0; i < ordersNumber; ++i) {
+                List<String> randomDishes =
+                    Stream.generate(() -> random.nextInt(dishes.size()))
+                        .limit(random.nextInt(dishes.size()) / 2 + 1)
+                        .map(dishes::get)
+                        .collect(Collectors.toList());
+                restaurantClientApi.makeOrder(randomDishes);
+
+                try {
+                  Thread.sleep(new Random().nextInt(5000));
+                } catch (InterruptedException e) {
+                  e.printStackTrace();
+                }
+              }
+            })
+        .start();
   }
 }
