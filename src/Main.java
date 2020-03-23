@@ -9,7 +9,6 @@ class Main {
 //    Restaurant restaurant = new HoanKiem(5);
 //    Restaurant restaurant = new Toscana(5);
     Restaurant restaurant = new LoveSchabowe(5);
-    restaurant.open();
 
     OrdersSimulator ordersSimulator = new OrdersSimulator(restaurant);
     ordersSimulator.simulate(20);
