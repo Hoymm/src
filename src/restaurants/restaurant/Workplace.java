@@ -7,10 +7,10 @@ import java.util.Random;
 
 class Workplace {
   private static int stationNumberCounter = 1;
+  
   private final int stationNumber;
   private final Restaurant restaurant; // TODO remove this dependency.
   private final Colors color;
-
   private boolean isOpen;
 
   Workplace(Restaurant restaurant) {
