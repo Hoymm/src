@@ -6,7 +6,7 @@ import java.util.stream.Stream;
 
 public abstract class Restaurant
     implements RestaurantClientApi, RestaurantManagersApi, WorkplaceReleaseNotifier {
-  final Queue<Order> waitingOrders; // TODO this should be private
+  private final Queue<Order> waitingOrders;
   private final Queue<Workplace> availableWorkplaces;
 
   protected Restaurant(int howManyProcessingStations) {
