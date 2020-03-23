@@ -4,8 +4,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public abstract class Restaurant
-    implements RestaurantClientApi, RestaurantManagersApi, WorkplaceReleaseNotifier {
+public abstract class Restaurant implements RestaurantClientApi, WorkplaceReleaseNotifier {
   private final Queue<Order> waitingOrders;
   private final Queue<Workplace> availableWorkplaces;
 
@@ -18,24 +17,13 @@ public abstract class Restaurant
   }
 
   @Override
-  public void open() {
-    System.out.println("RESTAURANT OPENED.");
-  }
-
-  @Override
-  public void close() {
-    System.out.println("RESTAURANT CLOSED.");
-  }
-
-  @Override
   public void makeOrder(List<String> dishes) {
     Order newOrder = OrderMaker.createNewOrder(dishes);
     Optional<Workplace> availableWorkplace = Optional.ofNullable(availableWorkplaces.poll());
 
-    if (availableWorkplace.isPresent()){
+    if (availableWorkplace.isPresent()) {
       availableWorkplace.get().processOrder(newOrder);
-    }
-    else {
+    } else {
       waitingOrders.add(newOrder);
     }
 
