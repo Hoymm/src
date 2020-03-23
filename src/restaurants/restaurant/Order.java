@@ -19,6 +19,6 @@ public class Order {
 
   @Override
   public String toString() {
-    return String.format("(ID: %2d): %s is %-15s", id, dishes, orderState);
+    return String.format("(ID:%2d) %s\nis %s", id, dishes, orderState);
   }
 }

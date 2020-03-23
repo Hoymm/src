@@ -5,14 +5,14 @@ import common.Colors;
 import java.util.NoSuchElementException;
 import java.util.Random;
 
-class OrderProcessingStation  {
+class OrderProcessingStation {
   private static int stationNumberCounter = 1;
   private final int stationNumber;
-  private final Restaurant  restaurant; // TODO remove this dependency.
+  private final Restaurant restaurant; // TODO remove this dependency.
   private final Colors color;
   private boolean isOpen;
 
-  OrderProcessingStation(Restaurant  restaurant) {
+  OrderProcessingStation(Restaurant restaurant) {
     this.restaurant = restaurant;
     this.color = Colors.getNextColor();
     this.stationNumber = stationNumberCounter++;
@@ -20,8 +20,7 @@ class OrderProcessingStation  {
 
   private void printOrderStatus(Order order) {
     System.out.printf(
-            "%sStation Number %d \n%s.%s\n", this.color, stationNumber, order
-            , Colors.RESET);
+        "%sStation Number %d%s \n%s.\n\n", this.color, stationNumber, Colors.RESET, order);
   }
 
   void open() {
