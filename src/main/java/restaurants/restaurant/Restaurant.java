@@ -16,7 +16,7 @@ public abstract class Restaurant implements RestaurantClientApi, WorkplaceReleas
   protected Restaurant(int howManyProcessingStations) {
     this.waitingOrders = new ArrayBlockingQueue<>(10);
     availableWorkplaces =
-        Stream.generate(() -> new Workplace(this))
+        Stream.generate(() -> new Workplace(this, this.waitingOrders::remove))
             .limit(howManyProcessingStations)
             .collect(Collectors.toCollection(ArrayDeque::new));
   }
@@ -24,26 +24,27 @@ public abstract class Restaurant implements RestaurantClientApi, WorkplaceReleas
   @Override
   public void makeOrder(List<String> dishes) {
     Order newOrder = OrderMaker.createNewOrder(dishes);
-    Optional<Workplace> availableWorkplace = Optional.ofNullable(availableWorkplaces.poll());
+//    Optional<Workplace> availableWorkplace = Optional.ofNullable(availableWorkplaces.poll());
 
     String blackBold = "\033[1;30m";
     System.out.printf("%s%s%s\n\n", blackBold, newOrder, Colors.RESET);
 
-    if (availableWorkplace.isPresent()) {
-      availableWorkplace.get().processOrder(newOrder);
-    } else {
+//    if (availableWorkplace.isPresent()) {
+//      availableWorkplace.get().processOrder(newOrder);
+//    } else {
       waitingOrders.add(newOrder);
-    }
+//    }
 
   }
 
+  // TODO REMOVE ?
   @Override
   public void notify(Workplace workplace) {
-    Optional<Order> order = Optional.ofNullable(waitingOrders.poll());
-    if (order.isPresent()) {
-      workplace.processOrder(order.get());
-    } else {
-      availableWorkplaces.add(workplace);
-    }
+//    Optional<Order> order = Optional.ofNullable(waitingOrders.poll());
+//    if (order.isPresent()) {
+//      workplace.processOrder(order.get());
+//    } else {
+//      availableWorkplaces.add(workplace);
+//    }
   }
 }
