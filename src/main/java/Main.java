@@ -11,6 +11,6 @@ class Main {
     Restaurant restaurant = new LoveSchabowe(5);
 
     OrdersSimulator ordersSimulator = new OrdersSimulator(restaurant);
-    ordersSimulator.simulate(20);
+    ordersSimulator.simulate(30);
   }
 }

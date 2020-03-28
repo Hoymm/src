@@ -28,7 +28,9 @@ public class OrdersSimulator {
                 restaurantClientApi.makeOrder(randomDishes);
 
                 try {
-                  Thread.sleep(new Random().nextInt(10000));
+                  int minTime = 500;
+                  int maxTime = 1000;
+                  Thread.sleep(new Random().nextInt(maxTime - minTime) + minTime);
                 } catch (InterruptedException e) {
                   e.printStackTrace();
                 }
