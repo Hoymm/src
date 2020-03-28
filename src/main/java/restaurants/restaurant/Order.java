@@ -2,7 +2,7 @@ package restaurants.restaurant;
 
 import java.util.List;
 
-public class Order {
+class Order {
   private final int id;
   private final List dishes;
   private OrderState orderState;
