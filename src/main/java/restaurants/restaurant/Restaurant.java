@@ -1,7 +1,11 @@
 package restaurants.restaurant;
 
 import common.Colors;
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.List;
+import java.util.Optional;
+import java.util.Queue;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -10,7 +14,7 @@ public abstract class Restaurant implements RestaurantClientApi, WorkplaceReleas
   private final Queue<Workplace> availableWorkplaces;
 
   protected Restaurant(int howManyProcessingStations) {
-    this.waitingOrders = new ArrayDeque<>();
+    this.waitingOrders = new ArrayBlockingQueue<>(10);
     availableWorkplaces =
         Stream.generate(() -> new Workplace(this))
             .limit(howManyProcessingStations)
