@@ -24,21 +24,11 @@ class Workplace extends Thread{
 
   @Override
   public void run() {
-    /* When removed, thread will try to get order from empty buffer.
-      Such attempt will result in an exception.
-     */
-    // TODO comment out this line.
-    tryToSleep(20000);
-
     Order order = this.orderSupplier.get();
     order.setOrderState(OrderState.IS_BEING_PREPARED);
     printOrderStatus(order);
 
-    // TODO comment out this line.
-    // Too long processing will result in buffer overflow and exception.
-    int processingTime = 500;
-//    int processingTime = 500;
-
+    int processingTime = 10000;
     tryToSleep(new Random().nextInt(processingTime));
 
     order.setOrderState(OrderState.READY_TO_PICKUP);

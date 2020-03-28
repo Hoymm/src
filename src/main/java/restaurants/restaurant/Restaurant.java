@@ -13,6 +13,12 @@ public abstract class Restaurant implements RestaurantClientApi {
   protected Restaurant(int howManyProcessingStations) {
     Queue<Order> ordersQueue = new ArrayBlockingQueue<>(10);
     this.ordersConsumer = ordersQueue::add;
+
+    try {
+      Thread.sleep(3000);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
     Stream.generate(() -> new Workplace(ordersQueue::remove))
         .limit(howManyProcessingStations)
         .forEach(Thread::start);
