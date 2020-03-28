@@ -4,7 +4,8 @@ import common.Colors;
 import java.util.Random;
 import java.util.concurrent.BlockingQueue;
 
-class Workplace extends Thread{
+class Workplace extends Thread {
+
   private static int stationNumberCounter = 1;
 
   private final int stationNumber = stationNumberCounter++;
@@ -24,20 +25,23 @@ class Workplace extends Thread{
 
   @Override
   public void run() {
-    tryToSleep(12000 + new Random().nextInt(2000));
+    tryToSleep(new Random().nextInt(14000) + 3000);
     while (true) {
       try {
         Order order = this.orderSupplier.take();
         order.setOrderState(OrderState.IS_BEING_PREPARED);
         printOrderStatus(order);
 
-        int processingTime = 10000;
+        // TODO change processing time in order to get exception because of
+        // either empty or full buffer.
+//      int processingTime = 5000;
+        int processingTime = 25000;
         tryToSleep(new Random().nextInt(processingTime));
 
         order.setOrderState(OrderState.READY_TO_PICKUP);
         printOrderStatus(order);
 
-        tryToSleep(3000);
+        tryToSleep(processingTime / 3);
       } catch (InterruptedException e) {
         e.printStackTrace();
       }
@@ -55,5 +59,5 @@ class Workplace extends Thread{
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
-    }
+  }
 }

@@ -21,7 +21,6 @@ import java.util.stream.Stream;
  * @author Damian Muca
  */
 public abstract class Restaurant implements RestaurantClientApi {
-
   private final BlockingQueue<Order> ordersQueue;
 
   protected Restaurant(int howManyProcessingStations) {
