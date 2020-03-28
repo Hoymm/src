@@ -3,8 +3,7 @@ package restaurants.restaurant;
 public enum OrderState {
     PLACED("placed"),
     IS_BEING_PREPARED("being prepared"),
-    READY_TO_PICKUP("ready to pickup"),
-    PICKED_UP("picked up");
+    READY_TO_PICKUP("ready to pickup");
 
     private final String stringName;
     OrderState(String stringName) {

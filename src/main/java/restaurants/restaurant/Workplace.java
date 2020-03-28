@@ -4,64 +4,52 @@ import common.Colors;
 import java.util.Random;
 import java.util.function.Supplier;
 
-class Workplace implements Runnable{
+class Workplace extends Thread{
   private static int stationNumberCounter = 1;
 
   private final int stationNumber = stationNumberCounter++;
   private final Colors color = Colors.getNextColor();
-  private final WorkplaceReleaseNotifier workplaceReleaseNotifier;
   private final Supplier<Order> orderSupplier;
-  private final Thread orderProcessing;
 
 
-  Workplace(WorkplaceReleaseNotifier workplaceReleaseNotifier, Supplier <Order> orderSupplier) {
-    this.workplaceReleaseNotifier = workplaceReleaseNotifier;
+  Workplace(Supplier <Order> orderSupplier) {
     this.orderSupplier = orderSupplier;
-    this.orderProcessing = new Thread(this);
-    this.orderProcessing.start();
+    this.setName(toString());
   }
 
-  private void printOrderStatus(Order order) {
-    System.out.printf(
-        "%sStation Number %d%s \n%s.\n\n", this.color, stationNumber, Colors.RESET, order);
+  @Override
+  public String toString() {
+    return String.format("Station Number %d", this.stationNumber);
   }
-
-
-
-//  Thread processOrder(Supplier <Order> orderSupplier) {
-//    Order order = orderSupplier.get();
-//    return new Thread(
-//            () -> {
-//
-//              order.setOrderState(OrderState.IS_BEING_PREPARED);
-//              printOrderStatus(order);
-//
-//              tryToSleep(new Random().nextInt(20000));
-//
-//              order.setOrderState(OrderState.READY_TO_PICKUP);
-//              printOrderStatus(order);
-//
-//              tryToSleep(3000);
-//              workplaceReleaseNotifier.notify(this);
-//            },"Order processing thread " + order.toString()
-//            )
-//        .start();
-//  }
 
   @Override
   public void run() {
-    tryToSleep(5000); // todo remove
+    /* When removed, thread will try to get order from empty buffer.
+      Such attempt will result in an exception.
+     */
+    // TODO comment out this line.
+    tryToSleep(20000);
+
     Order order = this.orderSupplier.get();
     order.setOrderState(OrderState.IS_BEING_PREPARED);
     printOrderStatus(order);
 
-    tryToSleep(new Random().nextInt(20000));
+    // TODO comment out this line.
+    // Too long processing will result in buffer overflow and exception.
+    int processingTime = 500;
+//    int processingTime = 500;
+
+    tryToSleep(new Random().nextInt(processingTime));
 
     order.setOrderState(OrderState.READY_TO_PICKUP);
     printOrderStatus(order);
 
     tryToSleep(3000);
-    workplaceReleaseNotifier.notify(this);
+  }
+
+  private void printOrderStatus(Order order) {
+    System.out.printf(
+        "%s%s%s \n%s.\n\n", this.color, this.toString(), Colors.RESET, order);
   }
 
   private void tryToSleep(long timeInMs) {
