@@ -2,19 +2,17 @@ package restaurants.restaurant;
 
 import common.Colors;
 import java.util.List;
-import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
-import java.util.function.Consumer;
+import java.util.concurrent.BlockingQueue;
 import java.util.stream.Stream;
 
 public abstract class Restaurant implements RestaurantClientApi {
-  private final Consumer<Order> ordersConsumer;
+  private final BlockingQueue<Order> ordersQueue;
 
   protected Restaurant(int howManyProcessingStations) {
-    Queue<Order> ordersQueue = new ArrayBlockingQueue<>(10);
-    this.ordersConsumer = ordersQueue::add;
+    this.ordersQueue = new ArrayBlockingQueue<>(10);
 
-    Stream.generate(() -> new Workplace(ordersQueue::remove))
+    Stream.generate(() -> new Workplace(this.ordersQueue))
         .limit(howManyProcessingStations)
         .forEach(Thread::start);
   }
@@ -22,9 +20,13 @@ public abstract class Restaurant implements RestaurantClientApi {
   @Override
   public void makeOrder(List<String> dishes) {
     Order newOrder = OrderMaker.createNewOrder(dishes);
-    ordersConsumer.accept(newOrder);
     String blackBold = "\033[1;30m";
     System.out.printf("%s%s%s\n\n", blackBold, newOrder, Colors.RESET);
+    try {
+      ordersQueue.put(newOrder);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
   }
 
 }

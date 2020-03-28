@@ -2,17 +2,17 @@ package restaurants.restaurant;
 
 import common.Colors;
 import java.util.Random;
-import java.util.function.Supplier;
+import java.util.concurrent.BlockingQueue;
 
 class Workplace extends Thread{
   private static int stationNumberCounter = 1;
 
   private final int stationNumber = stationNumberCounter++;
   private final Colors color = Colors.getNextColor();
-  private final Supplier<Order> orderSupplier;
+  private final BlockingQueue<Order> orderSupplier;
 
 
-  Workplace(Supplier <Order> orderSupplier) {
+  Workplace(BlockingQueue<Order> orderSupplier) {
     this.orderSupplier = orderSupplier;
     this.setName(toString());
   }
@@ -24,22 +24,23 @@ class Workplace extends Thread{
 
   @Override
   public void run() {
-    tryToSleep(new Random().nextInt(14000)+3000);
-    while(true) {
-      Order order = this.orderSupplier.get();
-      order.setOrderState(OrderState.IS_BEING_PREPARED);
-      printOrderStatus(order);
+    tryToSleep(12000 + new Random().nextInt(2000));
+    while (true) {
+      try {
+        Order order = this.orderSupplier.take();
+        order.setOrderState(OrderState.IS_BEING_PREPARED);
+        printOrderStatus(order);
 
-      // TODO change processing time in order to get exception because of
-      // either empty or full buffer.
-//      int processingTime = 5000;
-      int processingTime = 25000;
-      tryToSleep(new Random().nextInt(processingTime));
+        int processingTime = 10000;
+        tryToSleep(new Random().nextInt(processingTime));
 
-      order.setOrderState(OrderState.READY_TO_PICKUP);
-      printOrderStatus(order);
+        order.setOrderState(OrderState.READY_TO_PICKUP);
+        printOrderStatus(order);
 
-      tryToSleep(processingTime/3);
+        tryToSleep(3000);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
     }
   }
 
