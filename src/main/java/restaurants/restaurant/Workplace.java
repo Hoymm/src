@@ -24,6 +24,7 @@ class Workplace extends Thread{
 
   @Override
   public void run() {
+    tryToSleep(12000);
     Order order = this.orderSupplier.get();
     order.setOrderState(OrderState.IS_BEING_PREPARED);
     printOrderStatus(order);
