@@ -1,17 +1,18 @@
 package pl.com.muca.restaurants.restaurant;
 
-import java.io.PrintStream;
+import java.util.concurrent.locks.Condition;
 import pl.com.muca.common.Colors;
 import java.util.Random;
-import java.util.concurrent.BlockingQueue;
+import java.util.function.Supplier;
 
-class Workplace extends Thread {
-
+class Workplace extends Thread{
   private static int stationNumberCounter = 1;
 
   private final int stationNumber = stationNumberCounter++;
   private final Colors color = Colors.getNextColor();
-  private final BlockingQueue<Order> orderSupplier;
+  private final Supplier<Order> orderSupplier;
+  private Supplier<String> getBufferSizeInfo;
+  private Supplier<Boolean> isBufferEmpty;
 
   private static final String TAKE_ORDER_INFO = String.format(
       "%sZamówienie zostaje ściągniete z bufora z bufora kolejki i "
@@ -23,8 +24,11 @@ class Workplace extends Thread {
           + "umieszczeniu zamówienia w buforze kolejki.%s%n",
       Colors.RED, Colors.RESET);
 
-  Workplace(BlockingQueue<Order> orderSupplier) {
+  Workplace(Supplier<Order> orderSupplier, Supplier<String> getBufferSizeInfo,
+      Supplier <Boolean> isBufferEmpty) {
     this.orderSupplier = orderSupplier;
+    this.getBufferSizeInfo = getBufferSizeInfo;
+    this.isBufferEmpty = isBufferEmpty;
     this.setName(toString());
   }
 
@@ -35,29 +39,26 @@ class Workplace extends Thread {
 
   @Override
   public void run() {
-    tryToSleep(new Random().nextInt(14000) + 8000);
-    while (true) {
-      try {
-        if (orderSupplier.isEmpty()) {
-          System.out.println(BUFFER_EMPTY_INFO);
-        }
-        Order order = this.orderSupplier.take();
-        order.setOrderState(OrderState.IS_BEING_PREPARED);
-        printOrderStatus(order);
-
-        // TODO change processing time in order to get exception because of
-        // TODO either empty or full buffer.
-//        int processingTime = 5000;
-        int processingTime = 25000;
-        tryToSleep(new Random().nextInt(processingTime) + 3000);
-
-        order.setOrderState(OrderState.READY_TO_PICKUP);
-        printOrderStatus(order);
-
-        tryToSleep(processingTime / 3);
-      } catch (InterruptedException e) {
-        e.printStackTrace();
+    tryToSleep(new Random().nextInt(14000)+8000);
+    while(true) {
+      if (isBufferEmpty.get()) {
+        System.out.println(BUFFER_EMPTY_INFO);
       }
+
+      Order order = this.orderSupplier.get();
+      order.setOrderState(OrderState.IS_BEING_PREPARED);
+      printOrderStatus(order);
+
+      // TODO change processing time in order to get exception because of
+      // either empty or full buffer.
+//      int processingTime = 5000;
+      int processingTime = 25000;
+      tryToSleep(new Random().nextInt(processingTime) + 3000);
+
+      order.setOrderState(OrderState.READY_TO_PICKUP);
+      printOrderStatus(order);
+
+      tryToSleep(processingTime/3);
     }
   }
 
@@ -70,7 +71,7 @@ class Workplace extends Thread {
     String bufferSizeInfo = "";
     if (order.isBeingPrepared()) {
       takeOrderInfo = TAKE_ORDER_INFO;
-      bufferSizeInfo = getBufferSizeInfo();
+      bufferSizeInfo = getBufferSizeInfo.get();
     }
 
     String stationNumberInfo = getStationNumberInfo();
@@ -82,13 +83,6 @@ class Workplace extends Thread {
   private String getStationNumberInfo() {
     return String.format("%s%s%s %n",
         this.color, this.toString(), Colors.RESET);
-  }
-
-  private String getBufferSizeInfo() {
-    return String.format("%sRozmiar bufora %d/%d%s %n",
-        Colors.BUFFER_INFO, orderSupplier.size(),
-        orderSupplier.size() + orderSupplier.remainingCapacity(),
-        Colors.RESET);
   }
 
   private void tryToSleep(long timeInMs) {
