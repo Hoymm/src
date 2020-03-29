@@ -24,18 +24,23 @@ class Workplace extends Thread{
 
   @Override
   public void run() {
-    tryToSleep(12000);
-    Order order = this.orderSupplier.get();
-    order.setOrderState(OrderState.IS_BEING_PREPARED);
-    printOrderStatus(order);
+    tryToSleep(new Random().nextInt(14000)+3000);
+    while(true) {
+      Order order = this.orderSupplier.get();
+      order.setOrderState(OrderState.IS_BEING_PREPARED);
+      printOrderStatus(order);
 
-    int processingTime = 10000;
-    tryToSleep(new Random().nextInt(processingTime));
+      // TODO change processing time in order to get exception because of
+      // either empty or full buffer.
+//      int processingTime = 5000;
+      int processingTime = 25000;
+      tryToSleep(new Random().nextInt(processingTime));
 
-    order.setOrderState(OrderState.READY_TO_PICKUP);
-    printOrderStatus(order);
+      order.setOrderState(OrderState.READY_TO_PICKUP);
+      printOrderStatus(order);
 
-    tryToSleep(3000);
+      tryToSleep(processingTime/3);
+    }
   }
 
   private void printOrderStatus(Order order) {
