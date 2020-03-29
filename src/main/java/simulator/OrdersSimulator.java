@@ -28,7 +28,8 @@ public class OrdersSimulator {
                 restaurantClientApi.makeOrder(randomDishes);
 
                 try {
-                  Thread.sleep(2000);
+//                  Thread.sleep(3800);
+                  Thread.sleep(1800);
                 } catch (InterruptedException e) {
                   e.printStackTrace();
                 }
