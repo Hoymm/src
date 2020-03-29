@@ -1,16 +1,14 @@
-import restaurants.chinese.HoanKiem;
-import restaurants.italian.Toscana;
+import java.util.stream.Stream;
 import restaurants.polish.LoveSchabowe;
 import restaurants.restaurant.Restaurant;
 import simulator.OrdersSimulator;
 
 class Main {
-  public static void main(String[] args){
-//    Restaurant restaurant = new HoanKiem(5);
-//    Restaurant restaurant = new Toscana(5);
+  public static void main(String[] args) {
     Restaurant restaurant = new LoveSchabowe(5);
 
-    OrdersSimulator ordersSimulator = new OrdersSimulator(restaurant);
-    ordersSimulator.simulate(30);
+    // Creates 10 order simulators, each make 3 orders.
+    Stream.generate(() -> new OrdersSimulator(restaurant)).limit(10)
+        .forEach(s -> s.simulate(3));
   }
 }
