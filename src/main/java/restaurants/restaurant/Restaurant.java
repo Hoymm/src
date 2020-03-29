@@ -22,9 +22,9 @@ public abstract class Restaurant implements RestaurantClientApi {
   @Override
   public void makeOrder(List<String> dishes) {
     Order newOrder = OrderMaker.createNewOrder(dishes);
+    ordersConsumer.accept(newOrder);
     String blackBold = "\033[1;30m";
     System.out.printf("%s%s%s\n\n", blackBold, newOrder, Colors.RESET);
-    ordersConsumer.accept(newOrder);
   }
 
 }
