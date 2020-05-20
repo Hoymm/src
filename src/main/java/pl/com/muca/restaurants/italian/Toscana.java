@@ -1,8 +1,8 @@
-package restaurants.italian;
+package pl.com.muca.restaurants.italian;
 
 import java.util.Arrays;
 import java.util.List;
-import restaurants.restaurant.Restaurant;
+import pl.com.muca.restaurants.restaurant.Restaurant;
 
 public class Toscana extends Restaurant {
 

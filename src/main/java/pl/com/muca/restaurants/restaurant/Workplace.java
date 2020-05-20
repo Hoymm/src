@@ -1,6 +1,6 @@
-package restaurants.restaurant;
+package pl.com.muca.restaurants.restaurant;
 
-import common.Colors;
+import pl.com.muca.common.Colors;
 import java.util.Random;
 import java.util.concurrent.BlockingQueue;
 

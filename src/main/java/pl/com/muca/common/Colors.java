@@ -1,4 +1,4 @@
-package common;
+package pl.com.muca.common;
 
 import java.util.Arrays;
 import java.util.List;
