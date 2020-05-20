@@ -12,7 +12,9 @@ class Main {
 
   public static void main(String[] args) {
     // Create a restaurant with 4 processing stations.
-    // Each restaurant works in different thread and process given orders.
+    // Each processing station works in different thread and processes given orders.
+    // During processing a thread simulate preparing a meal,
+    // the thread cannot take another order until the meal is prepared.
     Restaurant restaurant = new LoveSchabowe(PROCESSING_STATIONS_NUMBER);
 
     // Creates 5 ordering simulators.
