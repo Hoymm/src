@@ -1,10 +1,10 @@
-package simulator;
+package pl.com.muca.simulator;
 
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import restaurants.restaurant.RestaurantClientApi;
+import pl.com.muca.restaurants.restaurant.RestaurantClientApi;
 
 public class OrdersSimulator {
   private static final Random random = new Random();

@@ -1,8 +1,8 @@
-package restaurants.chinese;
+package pl.com.muca.restaurants.chinese;
 
 import java.util.Arrays;
 import java.util.List;
-import restaurants.restaurant.Restaurant;
+import pl.com.muca.restaurants.restaurant.Restaurant;
 
 public class HoanKiem extends Restaurant {
   public HoanKiem(int howManyProcessingStations) {

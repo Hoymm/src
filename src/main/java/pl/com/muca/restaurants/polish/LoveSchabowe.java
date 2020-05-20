@@ -1,8 +1,8 @@
-package restaurants.polish;
+package pl.com.muca.restaurants.polish;
 
 import java.util.Arrays;
 import java.util.List;
-import restaurants.restaurant.Restaurant;
+import pl.com.muca.restaurants.restaurant.Restaurant;
 
 public class LoveSchabowe extends Restaurant {
 
