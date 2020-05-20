@@ -6,11 +6,19 @@ import pl.com.muca.restaurants.restaurant.Restaurant;
 import pl.com.muca.simulator.OrdersSimulator;
 
 class Main {
-  public static void main(String[] args) {
-    Restaurant restaurant = new LoveSchabowe(5);
+  private static final int PROCESSING_STATIONS_NUMBER = 4;
+  private static final int ORDER_SIMULATORS_NUMBER = 5;
+  private static final int ORDERS_PER_SIMULATOR = 3;
 
-    // Creates 10 order simulators, each make 3 orders.
-    Stream.generate(() -> new OrdersSimulator(restaurant)).limit(1)
-        .forEach(s -> s.simulate(3));
+  public static void main(String[] args) {
+    // Create a restaurant with 4 processing stations.
+    // Each restaurant works in different thread and process given orders.
+    Restaurant restaurant = new LoveSchabowe(PROCESSING_STATIONS_NUMBER);
+
+    // Creates 5 ordering simulators.
+    // Each simulator works in different thread and making 3 orders.
+    Stream.generate(() -> new OrdersSimulator(restaurant))
+        .limit(ORDER_SIMULATORS_NUMBER)
+        .forEach(s -> s.simulate(ORDERS_PER_SIMULATOR));
   }
 }
