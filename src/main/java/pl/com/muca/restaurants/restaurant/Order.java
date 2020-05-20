@@ -1,4 +1,4 @@
-package restaurants.restaurant;
+package pl.com.muca.restaurants.restaurant;
 
 import java.util.List;
 
