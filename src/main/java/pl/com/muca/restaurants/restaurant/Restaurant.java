@@ -22,7 +22,7 @@ public abstract class Restaurant implements RestaurantClientApi {
       Colors.RED, Colors.RESET);
 
   private final static String NEW_ORDER_IN_QUEUE_INFO = String.format(
-      "%sW buforze kolejki zostalo umieszczone nowe zamówienie:%s%n)",
+      "%sW buforze kolejki zostalo umieszczone nowe zamówienie:%s%n",
       Colors.BUFFER_INFO, Colors.RESET);
   private final static int BUFFER_SIZE = 10;
 

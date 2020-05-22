@@ -20,7 +20,7 @@ class Workplace extends Thread{
       Colors.BUFFER_INFO, Colors.RESET);
 
   String BUFFER_EMPTY_INFO = String.format(
-      "%n%sBufor jest pusty. Pobranie zamówienia będzie złożone po "
+      "%sBufor jest pusty. Pobranie zamówienia będzie złożone po "
           + "umieszczeniu zamówienia w buforze kolejki.%s%n",
       Colors.RED, Colors.RESET);
 
@@ -51,8 +51,8 @@ class Workplace extends Thread{
 
       // TODO change processing time in order to get exception because of
       // either empty or full buffer.
-//      int processingTime = 5000;
-      int processingTime = 25000;
+      int processingTime = 5000;
+//      int processingTime = 25000;
       tryToSleep(new Random().nextInt(processingTime) + 3000);
 
       order.setOrderState(OrderState.READY_TO_PICKUP);
