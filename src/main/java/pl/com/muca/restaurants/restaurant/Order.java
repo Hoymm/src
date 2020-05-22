@@ -1,8 +1,10 @@
 package pl.com.muca.restaurants.restaurant;
 
 import java.util.List;
+import pl.com.muca.common.Colors;
 
 class Order {
+
   private final int id;
   private final List dishes;
   private OrderState orderState;
@@ -19,6 +21,12 @@ class Order {
 
   @Override
   public String toString() {
-    return String.format("(ID:%2d) %s\nis %s", id, dishes, orderState);
+    return String
+        .format("%s(ID:%2d) %s\nis %s%s", Colors.BBLACK, id, dishes, orderState,
+            Colors.RESET);
+  }
+
+  public boolean isBeingPrepared() {
+    return OrderState.IS_BEING_PREPARED == this.orderState;
   }
 }
