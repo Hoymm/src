@@ -12,7 +12,7 @@ public class RestaurantInfoPrinter {
 
   private final static String NEW_ORDER_IN_QUEUE_INFO = String.format(
       "%sW buforze kolejki zostalo umieszczone nowe zamówienie:%s%n",
-      Colors.CONSUMER_BUFFER_INFO, Colors.RESET);
+      Colors.PRODUCER_BUFFER_INFO, Colors.RESET);
 
   private final int totalBufferCapacity;
   private final Supplier<Integer> getHowManyOrdersInBuffer;
@@ -42,7 +42,7 @@ public class RestaurantInfoPrinter {
 
   private String getBufferInfo() {
     return String.format("%sRozmiar bufora %d/%d%s %n",
-        Colors.CONSUMER_BUFFER_INFO, getHowManyOrdersInBuffer.get(),
+        Colors.PRODUCER_BUFFER_INFO, getHowManyOrdersInBuffer.get(),
         totalBufferCapacity,
         Colors.RESET);
   }

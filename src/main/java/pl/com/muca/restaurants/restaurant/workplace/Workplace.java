@@ -1,22 +1,23 @@
-package pl.com.muca.restaurants.restaurant;
+package pl.com.muca.restaurants.restaurant.workplace;
 
 import java.util.Random;
 import java.util.function.Supplier;
-import pl.com.muca.common.Colors;
+import pl.com.muca.restaurants.restaurant.Order;
+import pl.com.muca.restaurants.restaurant.OrderState;
 
 // TODO (Damian Muca): 5/23/20 move to package workplace.
-class Workplace extends Thread {
+public class Workplace extends Thread {
 
   private static int stationNumberCounter = 0;
   private final Supplier<Order> orderSupplier;
   private final WorkplaceInfoPrinter workplaceInfoPrinter;
 
-  Workplace(Supplier<Order> orderSupplier,
+  public Workplace(Supplier<Order> orderSupplier,
       Supplier<Integer> getHowManyOrdersInBuffer, int totalBufferCapacity) {
     ++stationNumberCounter;
     this.orderSupplier = orderSupplier;
-    this.workplaceInfoPrinter = new WorkplaceInfoPrinter(stationNumberCounter,
-        getHowManyOrdersInBuffer, totalBufferCapacity);
+    this.workplaceInfoPrinter = new WorkplaceInfoPrinter(totalBufferCapacity,
+        getHowManyOrdersInBuffer, stationNumberCounter);
   }
 
   @Override

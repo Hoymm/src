@@ -6,7 +6,7 @@ import java.util.Queue;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Stream;
-import pl.com.muca.common.Colors;
+import pl.com.muca.restaurants.restaurant.workplace.Workplace;
 
 
 /**

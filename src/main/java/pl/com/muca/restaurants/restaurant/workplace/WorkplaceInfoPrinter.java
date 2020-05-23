@@ -1,7 +1,8 @@
-package pl.com.muca.restaurants.restaurant;
+package pl.com.muca.restaurants.restaurant.workplace;
 
 import java.util.function.Supplier;
 import pl.com.muca.common.Colors;
+import pl.com.muca.restaurants.restaurant.Order;
 
 public class WorkplaceInfoPrinter {
 

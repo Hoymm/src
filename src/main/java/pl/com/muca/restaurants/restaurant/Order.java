@@ -3,7 +3,7 @@ package pl.com.muca.restaurants.restaurant;
 import java.util.List;
 import pl.com.muca.common.Colors;
 
-class Order {
+public class Order {
 
   private final int id;
   private final List dishes;
@@ -15,7 +15,7 @@ class Order {
     this.orderState = OrderState.PLACED;
   }
 
-  void setOrderState(OrderState orderState) {
+  public void setOrderState(OrderState orderState) {
     this.orderState = orderState;
   }
 
