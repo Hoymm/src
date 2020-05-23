@@ -22,7 +22,6 @@ public class ProcessingStation extends Thread {
 
   @Override
   public void run() {
-    tryToSleep(new Random().nextInt(14000) + 8000);
     while (true) {
       processingStationInfoPrinter.infoBeforeProcessingStart();
 
@@ -31,9 +30,8 @@ public class ProcessingStation extends Thread {
       processingStationInfoPrinter.printOrderStatus(order);
 
       // TODO change processing time to get empty or full buffer.
-      int processingTime = 5000;
-      // int processingTime = 25000;
-      tryToSleep(new Random().nextInt(processingTime) + 3000);
+      int processingTime = 35000;
+      tryToSleep(new Random().nextInt(processingTime) + 10000);
 
       order.setOrderState(OrderState.READY_TO_PICKUP);
 

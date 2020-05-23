@@ -1,26 +1,44 @@
 package pl.com.muca;
 
 import java.util.stream.Stream;
-import pl.com.muca.restaurants.polish.LoveSchabowe;
+import pl.com.muca.restaurants.RestaurantType;
 import pl.com.muca.restaurants.restaurant.Restaurant;
 import pl.com.muca.simulator.OrdersSimulator;
 
 class Main {
-  private static final int PROCESSING_STATIONS_NUMBER = 4;
-  private static final int ORDER_SIMULATORS_NUMBER = 5;
-  private static final int ORDERS_PER_SIMULATOR = 10;
+
 
   public static void main(String[] args) {
-    // Create a restaurant with 4 processing stations.
-    // Each processing station works in different thread and processes given orders.
-    // During processing a thread simulate preparing a meal,
-    // the thread cannot take another order until the meal is prepared.
-    Restaurant restaurant = new LoveSchabowe(PROCESSING_STATIONS_NUMBER);
+    // Read custom application parameters from user.
+    AppParameters appParameters =
+        new UserInfoReader().readApplicationParameters();
+    System.out.println(
+        "Uruchamiam stanowiska w restauracji i oczekuję na zamówienia... :)");
 
-    // Creates 5 ordering simulators.
-    // Each simulator works in different thread and making 10 orders.
+    // Creates restaurant chosen by user.
+    Restaurant restaurant = initRestaurant(appParameters);
+
+    // Initialize simulator to orders meals.
+    initOrdersSimulator(appParameters, restaurant);
+  }
+
+  // Creates ordering simulators.
+  // Each simulator works in different thread.
+  private static void initOrdersSimulator(AppParameters appParameters,
+      Restaurant restaurant) {
     Stream.generate(() -> new OrdersSimulator(restaurant))
-        .limit(ORDER_SIMULATORS_NUMBER)
-        .forEach(s -> s.simulate(ORDERS_PER_SIMULATOR));
+        .limit(appParameters.getOrderSimulatorsNumber())
+        .forEach(s -> s.simulate(appParameters.getOrdersPerSimulator()));
+  }
+
+  // Create a restaurant with processing stations.
+  // Each processing station works in different thread and processes given
+  // orders. During processing a thread simulate preparing a meal,
+  // the thread cannot take another order until the meal is prepared.
+  private static Restaurant initRestaurant(AppParameters appParameters) {
+    int processingStationsNumber = appParameters.getProcessingStationsNumber();
+    RestaurantType restaurantType = appParameters.getRestaurantType();
+    return restaurantType
+        .generateRestaurant(processingStationsNumber);
   }
 }

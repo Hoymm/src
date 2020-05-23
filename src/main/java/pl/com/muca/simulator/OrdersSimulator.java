@@ -20,13 +20,14 @@ public class OrdersSimulator {
     new Thread(
             () -> {
               for (int i = 0; i < ordersNumber; ++i) {
-                tryToSleep(new Random().nextInt(25000) + 5000);
+                tryToSleep(new Random().nextInt(5000));
                 List<String> randomDishes =
                     Stream.generate(() -> random.nextInt(dishes.size()))
                         .limit(random.nextInt(dishes.size()) / 2 + 1)
                         .map(dishes::get)
                         .collect(Collectors.toList());
                 restaurantClientApi.makeOrder(randomDishes);
+                tryToSleep(new Random().nextInt(35000) + 5000);
               }
             })
         .start();
