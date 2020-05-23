@@ -6,9 +6,12 @@ import java.util.stream.Collectors;
 
 public enum Colors {
   RESET("\033[0m"),           // Text Reset
-  BUFFER_INFO("\033[4;35m"),  // UPURPLE
-  THREAD_PRODUCER_INFO("\033[0;104m"),    // ONBLUE
-  THREAD_CONSUMER_INFO("\033[0;105m"),    // ONPURPLE
+
+  PRODUCER_THREAD_INFO("\033[0;104m"),    // ONBLUE
+  PRODUCER_BUFFER_INFO("\033[4;34m"),  // UBLUE
+
+  CONSUMER_BUFFER_INFO("\033[4;35m"),  // UPURPLE
+  CONSUMER_THREAD_INFO("\033[0;105m"),    // ONPURPLE
 
   BLACK("\033[0;30m"),        // Black
   RED("\033[0;31m"),          // Red
@@ -74,9 +77,6 @@ public enum Colors {
   ON_IWHITE("\033[0;107m");   // White
 
   private final String stringColor;
-  private static int colorIdCounter = 0;
-  private static final List<Colors> availableColors =
-      Arrays.asList(BLACK, RED, GREEN, YELLOW, BLUE, PURPLE, CYAN, WHITE);
 
   Colors(String stringColor) {
     this.stringColor = stringColor;
@@ -85,9 +85,5 @@ public enum Colors {
   @Override
   public String toString() {
     return this.stringColor;
-  }
-
-  public static Colors getNextColor() {
-    return availableColors.get(colorIdCounter++ % availableColors.size());
   }
 }

@@ -32,17 +32,10 @@ public abstract class Restaurant implements RestaurantClientApi {
     this.restaurantInfoPrinter = new RestaurantInfoPrinter(ordersQueue::size,
         BUFFER_SIZE);
 
-    Stream.generate(() -> new Workplace(this::remove, this::getBufferSizeInfo,
-        ordersQueue::isEmpty))
+    Stream.generate(
+        () -> new Workplace(this::remove, ordersQueue::size, BUFFER_SIZE))
         .limit(howManyProcessingStations)
         .forEach(Thread::start);
-  }
-
-  // TODO REMOVE THIS METHOD !!!
-  private String getBufferSizeInfo() {
-    return String.format("%sRozmiar bufora %d/%d%s %n",
-        Colors.BUFFER_INFO, ordersQueue.size(), BUFFER_SIZE,
-        Colors.RESET);
   }
 
   @Override
@@ -53,7 +46,7 @@ public abstract class Restaurant implements RestaurantClientApi {
   // Entire method is a critical section.
   // This is why we put lock at the beginning and release it after.
   private void put(Order order) {
-    restaurantInfoPrinter.infoBeforePuttingIntoBuffer();
+    restaurantInfoPrinter.printInfoBeforePuttingIntoBuffer();
     queueLock.lock();
     try {
       // Simulate fixed size buffer.
@@ -72,7 +65,7 @@ public abstract class Restaurant implements RestaurantClientApi {
     } finally {
       queueLock.unlock();
     }
-    restaurantInfoPrinter.infoAfterPuttingIntoBuffer(order);
+    restaurantInfoPrinter.printInfoAfterPuttingIntoBuffer(order);
   }
 
   // Entire method is a critical section.
