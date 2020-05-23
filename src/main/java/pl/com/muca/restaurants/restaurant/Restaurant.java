@@ -16,16 +16,9 @@ import pl.com.muca.common.Colors;
  */
 public abstract class Restaurant implements RestaurantClientApi {
 
-  private final static String BUFFER_FULL_INFO = String.format(
-      "%sBufor jest pełny. Złożenie następnego zamówienia będzie "
-          + "zrealizowane po zwolnieniu bufora.%s%n",
-      Colors.RED, Colors.RESET);
-
-  private final static String NEW_ORDER_IN_QUEUE_INFO = String.format(
-      "%sW buforze kolejki zostalo umieszczone nowe zamówienie:%s%n",
-      Colors.BUFFER_INFO, Colors.RESET);
   private final static int BUFFER_SIZE = 10;
 
+  private final RestaurantInfoPrinter restaurantInfoPrinter;
   private final Queue<Order> ordersQueue;
   private final ReentrantLock queueLock;
   private Condition isQueueFull;
@@ -33,18 +26,34 @@ public abstract class Restaurant implements RestaurantClientApi {
 
   protected Restaurant(int howManyProcessingStations) {
     ordersQueue = new LinkedList<>();
+    this.queueLock = new ReentrantLock(true);
+    this.isQueueFull = queueLock.newCondition();
+    this.isQueueEmpty = queueLock.newCondition();
+    this.restaurantInfoPrinter = new RestaurantInfoPrinter(ordersQueue::size,
+        BUFFER_SIZE);
+
     Stream.generate(() -> new Workplace(this::remove, this::getBufferSizeInfo,
         ordersQueue::isEmpty))
         .limit(howManyProcessingStations)
         .forEach(Thread::start);
-    queueLock = new ReentrantLock(true);
-    isQueueFull = queueLock.newCondition();
-    isQueueEmpty = queueLock.newCondition();
+  }
+
+  // TODO REMOVE THIS METHOD !!!
+  private String getBufferSizeInfo() {
+    return String.format("%sRozmiar bufora %d/%d%s %n",
+        Colors.BUFFER_INFO, ordersQueue.size(), BUFFER_SIZE,
+        Colors.RESET);
+  }
+
+  @Override
+  public void makeOrder(List<String> dishes) {
+    put(OrderMaker.createNewOrder(dishes));
   }
 
   // Entire method is a critical section.
   // This is why we put lock at the beginning and release it after.
   private void put(Order order) {
+    restaurantInfoPrinter.infoBeforePuttingIntoBuffer();
     queueLock.lock();
     try {
       // Simulate fixed size buffer.
@@ -63,6 +72,7 @@ public abstract class Restaurant implements RestaurantClientApi {
     } finally {
       queueLock.unlock();
     }
+    restaurantInfoPrinter.infoAfterPuttingIntoBuffer(order);
   }
 
   // Entire method is a critical section.
@@ -86,31 +96,5 @@ public abstract class Restaurant implements RestaurantClientApi {
     } finally {
       queueLock.unlock();
     }
-  }
-
-  @Override
-  public void makeOrder(List<String> dishes) {
-    Order newOrder = OrderMaker.createNewOrder(dishes);
-    String threadInfo = String
-        .format("%sProducent%s, wątek nr. %s%n",
-            Colors.THREAD_PRODUCER_INFO, Colors.RESET,
-            Thread.currentThread().getId());
-
-    if (BUFFER_SIZE == ordersQueue.size()) {
-      System.out.println(threadInfo + BUFFER_FULL_INFO);
-    }
-
-    this.put(newOrder);
-
-    String newOrderInfo = String.format("%s%n", newOrder);
-    String bufferSizeInfo = getBufferSizeInfo();
-    System.out.println(threadInfo + NEW_ORDER_IN_QUEUE_INFO + newOrderInfo +
-        bufferSizeInfo);
-  }
-
-  private String getBufferSizeInfo() {
-    return String.format("%sRozmiar bufora %d/%d%s %n",
-        Colors.BUFFER_INFO, ordersQueue.size(), BUFFER_SIZE,
-        Colors.RESET);
   }
 }
