@@ -11,13 +11,13 @@ public class ProcessingStationInfoPrinter {
           + "przekazane do przygotowania:%s%n",
       Colors.CONSUMER_BUFFER_INFO, Colors.RESET);
 
-  String BUFFER_EMPTY_INFO = String.format(
+  private static final String BUFFER_EMPTY_INFO = String.format(
       "%sBufor jest pusty. Pobranie zamówienia będzie złożone po "
           + "umieszczeniu zamówienia w buforze kolejki.%s%n",
       Colors.RED, Colors.RESET);
 
-  private BufferInfo bufferInfo;
-  private int stationNumber;
+  private final BufferInfo bufferInfo;
+  private final int stationNumber;
 
   public ProcessingStationInfoPrinter(BufferInfo bufferInfo,
       int stationNumber) {
@@ -59,9 +59,5 @@ public class ProcessingStationInfoPrinter {
 
   private String getStationNumberInfo() {
     return String.format("Station Number %d", this.stationNumber);
-  }
-
-  public void setStationNumber(int stationNumber) {
-    this.stationNumber = stationNumber;
   }
 }

@@ -1,9 +1,5 @@
 package pl.com.muca.common;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
 public enum Colors {
   RESET("\033[0m"),           // Text Reset
 

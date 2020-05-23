@@ -23,8 +23,8 @@ public abstract class Restaurant implements RestaurantClientApi {
   private final RestaurantInfoPrinter restaurantInfoPrinter;
   private final Queue<Order> ordersQueue;
   private final ReentrantLock queueLock;
-  private Condition isQueueFull;
-  private Condition isQueueEmpty;
+  private final Condition isQueueFull;
+  private final Condition isQueueEmpty;
 
   protected Restaurant(int howManyProcessingStations) {
     ordersQueue = new LinkedList<>();

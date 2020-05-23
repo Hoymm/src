@@ -13,7 +13,7 @@ public class RestaurantInfoPrinter {
   private final static String NEW_ORDER_IN_QUEUE_INFO = String.format(
       "%sW buforze kolejki zostalo umieszczone nowe zamówienie:%s%n",
       Colors.PRODUCER_BUFFER_INFO, Colors.RESET);
-  private BufferInfo bufferInfo;
+  private final BufferInfo bufferInfo;
 
   public RestaurantInfoPrinter(BufferInfo bufferInfo) {
     this.bufferInfo = bufferInfo;
