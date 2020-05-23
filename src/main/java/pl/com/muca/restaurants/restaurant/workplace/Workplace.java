@@ -2,8 +2,8 @@ package pl.com.muca.restaurants.restaurant.workplace;
 
 import java.util.Random;
 import java.util.function.Supplier;
-import pl.com.muca.restaurants.restaurant.Order;
-import pl.com.muca.restaurants.restaurant.OrderState;
+import pl.com.muca.restaurants.restaurant.order.Order;
+import pl.com.muca.restaurants.restaurant.order.OrderState;
 
 public class Workplace extends Thread {
 

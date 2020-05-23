@@ -6,6 +6,8 @@ import java.util.Queue;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Stream;
+import pl.com.muca.restaurants.restaurant.order.Order;
+import pl.com.muca.restaurants.restaurant.order.OrderMaker;
 import pl.com.muca.restaurants.restaurant.workplace.Workplace;
 
 

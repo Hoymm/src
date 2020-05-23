@@ -1,4 +1,4 @@
-package pl.com.muca.restaurants.restaurant;
+package pl.com.muca.restaurants.restaurant.order;
 
 import java.util.List;
 import pl.com.muca.common.Colors;

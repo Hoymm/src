@@ -1,4 +1,4 @@
-package pl.com.muca.restaurants.restaurant;
+package pl.com.muca.restaurants.restaurant.order;
 
 import static pl.com.muca.common.Colors.BGREEN;
 import static pl.com.muca.common.Colors.YELLOW;
