@@ -33,7 +33,8 @@ public abstract class Restaurant implements RestaurantClientApi {
 
   protected Restaurant(int howManyProcessingStations) {
     ordersQueue = new LinkedList<>();
-    Stream.generate(() -> new Workplace(this::remove, this::getBufferSizeInfo, ordersQueue::isEmpty))
+    Stream.generate(() -> new Workplace(this::remove, this::getBufferSizeInfo,
+        ordersQueue::isEmpty))
         .limit(howManyProcessingStations)
         .forEach(Thread::start);
     queueLock = new ReentrantLock(true);
@@ -91,9 +92,9 @@ public abstract class Restaurant implements RestaurantClientApi {
   public void makeOrder(List<String> dishes) {
     Order newOrder = OrderMaker.createNewOrder(dishes);
     String threadInfo = String
-        .format("%sID wątku (PRODUCENTA) wypisującego informacje: %s%s%n",
-            Colors.THREAD_PRODUCER_INFO,
-            Thread.currentThread().getId(), Colors.RESET);
+        .format("%sProducent%s, wątek nr. %s%n",
+            Colors.THREAD_PRODUCER_INFO, Colors.RESET,
+            Thread.currentThread().getId());
 
     if (BUFFER_SIZE == ordersQueue.size()) {
       System.out.println(threadInfo + BUFFER_FULL_INFO);

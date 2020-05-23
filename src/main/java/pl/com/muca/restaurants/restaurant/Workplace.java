@@ -1,11 +1,11 @@
 package pl.com.muca.restaurants.restaurant;
 
-import java.util.concurrent.locks.Condition;
-import pl.com.muca.common.Colors;
 import java.util.Random;
 import java.util.function.Supplier;
+import pl.com.muca.common.Colors;
 
-class Workplace extends Thread{
+class Workplace extends Thread {
+
   private static int stationNumberCounter = 1;
 
   private final int stationNumber = stationNumberCounter++;
@@ -25,7 +25,7 @@ class Workplace extends Thread{
       Colors.RED, Colors.RESET);
 
   Workplace(Supplier<Order> orderSupplier, Supplier<String> getBufferSizeInfo,
-      Supplier <Boolean> isBufferEmpty) {
+      Supplier<Boolean> isBufferEmpty) {
     this.orderSupplier = orderSupplier;
     this.getBufferSizeInfo = getBufferSizeInfo;
     this.isBufferEmpty = isBufferEmpty;
@@ -39,8 +39,8 @@ class Workplace extends Thread{
 
   @Override
   public void run() {
-    tryToSleep(new Random().nextInt(14000)+8000);
-    while(true) {
+    tryToSleep(new Random().nextInt(14000) + 8000);
+    while (true) {
       if (isBufferEmpty.get()) {
         System.out.println(BUFFER_EMPTY_INFO);
       }
@@ -58,15 +58,15 @@ class Workplace extends Thread{
       order.setOrderState(OrderState.READY_TO_PICKUP);
       printOrderStatus(order);
 
-      tryToSleep(processingTime/3);
+      tryToSleep(processingTime / 3);
     }
   }
 
   private void printOrderStatus(Order order) {
     String threadInfo = String
-        .format("%sID wątku (KONSUMENTA) wypisującego informacje: %s%s%n",
-            Colors.THREAD_CONSUMER_INFO,
-            Thread.currentThread().getId(), Colors.RESET);
+        .format("%sKonsument%s, wątek nr. %s%n",
+            Colors.THREAD_CONSUMER_INFO, Colors.RESET,
+            Thread.currentThread().getId());
     String takeOrderInfo = "";
     String bufferSizeInfo = "";
     if (order.isBeingPrepared()) {
@@ -76,7 +76,8 @@ class Workplace extends Thread{
 
     String stationNumberInfo = getStationNumberInfo();
     String orderInfo = String.format("%s%n", order);
-    System.out.println(threadInfo + takeOrderInfo + stationNumberInfo + orderInfo
+    System.out
+        .println(threadInfo + takeOrderInfo + stationNumberInfo + orderInfo
             + bufferSizeInfo);
   }
 
