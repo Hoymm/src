@@ -5,7 +5,6 @@ import java.util.function.Supplier;
 import pl.com.muca.restaurants.restaurant.Order;
 import pl.com.muca.restaurants.restaurant.OrderState;
 
-// TODO (Damian Muca): 5/23/20 move to package workplace.
 public class Workplace extends Thread {
 
   private static int stationNumberCounter = 0;
