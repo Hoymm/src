@@ -1,10 +1,10 @@
-package pl.com.muca.restaurants.restaurant.workplace;
+package pl.com.muca.restaurants.restaurant.processingstation;
 
 import pl.com.muca.common.Colors;
 import pl.com.muca.restaurants.restaurant.BufferInfo;
 import pl.com.muca.restaurants.restaurant.order.Order;
 
-public class WorkplaceInfoPrinter {
+public class ProcessingStationInfoPrinter {
 
   private static final String TAKE_ORDER_INFO = String.format(
       "%sZamówienie zostaje ściągniete z bufora z bufora kolejki i "
@@ -19,7 +19,7 @@ public class WorkplaceInfoPrinter {
   private BufferInfo bufferInfo;
   private int stationNumber;
 
-  public WorkplaceInfoPrinter(BufferInfo bufferInfo,
+  public ProcessingStationInfoPrinter(BufferInfo bufferInfo,
       int stationNumber) {
     this.bufferInfo = bufferInfo;
     this.stationNumber = stationNumber;

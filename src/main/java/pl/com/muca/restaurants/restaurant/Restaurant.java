@@ -8,7 +8,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Stream;
 import pl.com.muca.restaurants.restaurant.order.Order;
 import pl.com.muca.restaurants.restaurant.order.OrderMaker;
-import pl.com.muca.restaurants.restaurant.workplace.Workplace;
+import pl.com.muca.restaurants.restaurant.processingstation.ProcessingStation;
 
 
 /**
@@ -40,7 +40,7 @@ public abstract class Restaurant implements RestaurantClientApi {
   private void initProcessingStations(int howManyProcessingStations,
       BufferInfo bufferInfo) {
     Stream.generate(
-        () -> new Workplace(this::remove, bufferInfo))
+        () -> new ProcessingStation(this::remove, bufferInfo))
         .limit(howManyProcessingStations)
         .forEach(Thread::start);
   }
