@@ -1,7 +1,7 @@
 package pl.com.muca.restaurants.restaurant.workplace;
 
-import java.util.function.Supplier;
 import pl.com.muca.common.Colors;
+import pl.com.muca.restaurants.restaurant.BufferInfo;
 import pl.com.muca.restaurants.restaurant.order.Order;
 
 public class WorkplaceInfoPrinter {
@@ -16,20 +16,17 @@ public class WorkplaceInfoPrinter {
           + "umieszczeniu zamówienia w buforze kolejki.%s%n",
       Colors.RED, Colors.RESET);
 
-  private int totalBufferCapacity;
-  private Supplier<Integer> getHowManyOrdersInBuffer;
+  private BufferInfo bufferInfo;
   private int stationNumber;
 
-  public WorkplaceInfoPrinter(int totalBufferCapacity,
-      Supplier<Integer> getHowManyOrdersInBuffer,
+  public WorkplaceInfoPrinter(BufferInfo bufferInfo,
       int stationNumber) {
-    this.totalBufferCapacity = totalBufferCapacity;
-    this.getHowManyOrdersInBuffer = getHowManyOrdersInBuffer;
+    this.bufferInfo = bufferInfo;
     this.stationNumber = stationNumber;
   }
 
   public void infoBeforeProcessingStart() {
-    if (getHowManyOrdersInBuffer.get() == 0) {
+    if (bufferInfo.isEmpty()) {
       System.out.println(BUFFER_EMPTY_INFO);
     }
   }
@@ -55,7 +52,8 @@ public class WorkplaceInfoPrinter {
 
   private String getBufferSizeInfo() {
     return String.format("%sRozmiar bufora %d/%d%s %n",
-        Colors.CONSUMER_BUFFER_INFO, getHowManyOrdersInBuffer.get(), this.totalBufferCapacity,
+        Colors.CONSUMER_BUFFER_INFO, bufferInfo.size(),
+        bufferInfo.getTotalCapacity(),
         Colors.RESET);
   }
 

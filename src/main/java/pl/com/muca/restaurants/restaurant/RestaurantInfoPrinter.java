@@ -1,6 +1,5 @@
 package pl.com.muca.restaurants.restaurant;
 
-import java.util.function.Supplier;
 import pl.com.muca.common.Colors;
 import pl.com.muca.restaurants.restaurant.order.Order;
 
@@ -14,25 +13,17 @@ public class RestaurantInfoPrinter {
   private final static String NEW_ORDER_IN_QUEUE_INFO = String.format(
       "%sW buforze kolejki zostalo umieszczone nowe zamówienie:%s%n",
       Colors.PRODUCER_BUFFER_INFO, Colors.RESET);
+  private BufferInfo bufferInfo;
 
-  private final int totalBufferCapacity;
-  private final Supplier<Integer> getHowManyOrdersInBuffer;
-
-  public RestaurantInfoPrinter(Supplier<Integer> getHowManyOrdersInBuffer,
-      int totalBufferCapacity) {
-    this.totalBufferCapacity = totalBufferCapacity;
-    this.getHowManyOrdersInBuffer = getHowManyOrdersInBuffer;
+  public RestaurantInfoPrinter(BufferInfo bufferInfo) {
+    this.bufferInfo = bufferInfo;
   }
 
 
   public void printInfoBeforePuttingIntoBuffer() {
-    if (isBufferFull()) {
+    if (bufferInfo.isFull()) {
       System.out.println(getThreadInfo() + BUFFER_FULL_INFO);
     }
-  }
-
-  private boolean isBufferFull() {
-    return totalBufferCapacity == getHowManyOrdersInBuffer.get();
   }
 
   public void printInfoAfterPuttingIntoBuffer(Order newOrder) {
@@ -43,8 +34,8 @@ public class RestaurantInfoPrinter {
 
   private String getBufferInfo() {
     return String.format("%sRozmiar bufora %d/%d%s %n",
-        Colors.PRODUCER_BUFFER_INFO, getHowManyOrdersInBuffer.get(),
-        totalBufferCapacity,
+        Colors.PRODUCER_BUFFER_INFO, bufferInfo.size(),
+        bufferInfo.getTotalCapacity(),
         Colors.RESET);
   }
 

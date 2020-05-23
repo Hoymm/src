@@ -31,11 +31,16 @@ public abstract class Restaurant implements RestaurantClientApi {
     this.queueLock = new ReentrantLock(true);
     this.isQueueFull = queueLock.newCondition();
     this.isQueueEmpty = queueLock.newCondition();
-    this.restaurantInfoPrinter = new RestaurantInfoPrinter(ordersQueue::size,
-        BUFFER_SIZE);
 
+    BufferInfo bufferInfo = new BufferInfo(ordersQueue::size, BUFFER_SIZE);
+    this.restaurantInfoPrinter = new RestaurantInfoPrinter(bufferInfo);
+    initProcessingStations(howManyProcessingStations, bufferInfo);
+  }
+
+  private void initProcessingStations(int howManyProcessingStations,
+      BufferInfo bufferInfo) {
     Stream.generate(
-        () -> new Workplace(this::remove, ordersQueue::size, BUFFER_SIZE))
+        () -> new Workplace(this::remove, bufferInfo))
         .limit(howManyProcessingStations)
         .forEach(Thread::start);
   }

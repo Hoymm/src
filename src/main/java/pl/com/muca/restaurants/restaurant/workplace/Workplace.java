@@ -2,6 +2,7 @@ package pl.com.muca.restaurants.restaurant.workplace;
 
 import java.util.Random;
 import java.util.function.Supplier;
+import pl.com.muca.restaurants.restaurant.BufferInfo;
 import pl.com.muca.restaurants.restaurant.order.Order;
 import pl.com.muca.restaurants.restaurant.order.OrderState;
 
@@ -11,12 +12,10 @@ public class Workplace extends Thread {
   private final Supplier<Order> orderSupplier;
   private final WorkplaceInfoPrinter workplaceInfoPrinter;
 
-  public Workplace(Supplier<Order> orderSupplier,
-      Supplier<Integer> getHowManyOrdersInBuffer, int totalBufferCapacity) {
-    ++stationNumberCounter;
+  public Workplace(Supplier<Order> orderSupplier, BufferInfo bufferInfo) {
+    int currentStationNumber = ++stationNumberCounter;
     this.orderSupplier = orderSupplier;
-    this.workplaceInfoPrinter = new WorkplaceInfoPrinter(totalBufferCapacity,
-        getHowManyOrdersInBuffer, stationNumberCounter);
+    this.workplaceInfoPrinter = new WorkplaceInfoPrinter(bufferInfo, currentStationNumber);
   }
 
   @Override
