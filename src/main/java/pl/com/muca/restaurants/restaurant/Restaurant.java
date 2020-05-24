@@ -18,7 +18,7 @@ import pl.com.muca.restaurants.restaurant.processingstation.ProcessingStation;
  */
 public abstract class Restaurant implements RestaurantClientApi {
 
-  private final static int BUFFER_SIZE = 10;
+  private final static int MAX_BUFFER_SIZE = 10;
 
   private final RestaurantInfoPrinter restaurantInfoPrinter;
   private final Queue<Order> ordersQueue;
@@ -32,7 +32,7 @@ public abstract class Restaurant implements RestaurantClientApi {
     this.isQueueFull = queueLock.newCondition();
     this.isQueueEmpty = queueLock.newCondition();
 
-    BufferInfo bufferInfo = new BufferInfo(ordersQueue::size, BUFFER_SIZE);
+    BufferInfo bufferInfo = new BufferInfo(ordersQueue::size, MAX_BUFFER_SIZE);
     this.restaurantInfoPrinter = new RestaurantInfoPrinter(bufferInfo);
     initProcessingStations(howManyProcessingStations, bufferInfo);
   }
@@ -57,7 +57,7 @@ public abstract class Restaurant implements RestaurantClientApi {
     queueLock.lock();
     try {
       // Simulate fixed size buffer.
-      while (ordersQueue.size() == BUFFER_SIZE) {
+      while (ordersQueue.size() == MAX_BUFFER_SIZE) {
         try {
           // When the buffer is full, put this thread in a wait state.
           // Thread will be awaken after order is removed from the buffer.

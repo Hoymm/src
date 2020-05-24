@@ -6,7 +6,7 @@ import pl.com.muca.restaurants.restaurant.Restaurant;
 import pl.com.muca.simulator.OrdersSimulator;
 
 class Main {
-  
+
   public static void main(String[] args) {
     // Read custom application parameters from user.
     AppParameters appParameters =
