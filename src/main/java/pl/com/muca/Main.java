@@ -9,12 +9,11 @@ class Main {
 
   public static void main(String[] args) {
     // Read custom application parameters from user.
-    AppParameters appParameters =
-        new UserInfoReader().readApplicationParameters();
+    AppParameters appParameters = new AppParametersReader().readFromUser();
     System.out.println(
         "Uruchamiam stanowiska w restauracji i oczekuję na zamówienia... :)");
 
-    // Create restaurant chosen by user.
+    // Create restaurant of type chosen by user.
     Restaurant restaurant = initRestaurant(appParameters);
 
     // Initialize meal order simulator.

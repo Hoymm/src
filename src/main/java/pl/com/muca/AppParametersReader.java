@@ -4,15 +4,15 @@ import java.util.Scanner;
 import pl.com.muca.common.Colors;
 import pl.com.muca.restaurants.RestaurantType;
 
-public class UserInfoReader {
+public class AppParametersReader {
 
   private final Scanner scanner;
 
-  public UserInfoReader() {
+  public AppParametersReader() {
     this.scanner = new Scanner(System.in);
   }
 
-  public AppParameters readApplicationParameters() {
+  public AppParameters readFromUser() {
 
     System.out.printf("\n\t%s ########## Witaj w symulatorze restauracji %s\n",
         Colors.BLUE,
