@@ -6,8 +6,7 @@ import pl.com.muca.restaurants.restaurant.Restaurant;
 import pl.com.muca.simulator.OrdersSimulator;
 
 class Main {
-
-
+  
   public static void main(String[] args) {
     // Read custom application parameters from user.
     AppParameters appParameters =
@@ -15,14 +14,14 @@ class Main {
     System.out.println(
         "Uruchamiam stanowiska w restauracji i oczekuję na zamówienia... :)");
 
-    // Creates restaurant chosen by user.
+    // Create restaurant chosen by user.
     Restaurant restaurant = initRestaurant(appParameters);
 
-    // Initialize simulator to orders meals.
+    // Initialize meal order simulator.
     initOrdersSimulator(appParameters, restaurant);
   }
 
-  // Creates ordering simulators.
+  // Initialize meal order simulator.
   // Each simulator works in different thread.
   private static void initOrdersSimulator(AppParameters appParameters,
       Restaurant restaurant) {
