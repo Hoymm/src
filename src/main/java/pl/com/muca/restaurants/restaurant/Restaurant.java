@@ -3,13 +3,15 @@ package pl.com.muca.restaurants.restaurant;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import pl.com.muca.restaurants.restaurant.order.Order;
 import pl.com.muca.restaurants.restaurant.order.OrderMaker;
 import pl.com.muca.restaurants.restaurant.processingstation.ProcessingStation;
-
 
 /**
  * Solution for the producer consumer problem using locks.
@@ -18,31 +20,38 @@ import pl.com.muca.restaurants.restaurant.processingstation.ProcessingStation;
  */
 public abstract class Restaurant implements RestaurantClientApi {
 
-  private final static int MAX_BUFFER_SIZE = 10;
+  private static final int MAX_BUFFER_SIZE = 10;
 
   private final RestaurantInfoPrinter restaurantInfoPrinter;
   private final Queue<Order> ordersQueue;
   private final ReentrantLock queueLock;
   private final Condition isQueueFull;
   private final Condition isQueueEmpty;
+  private final ExecutorService processingStationsExecutor;
+  private final List<ProcessingStation> processingStations;
 
   protected Restaurant(int howManyProcessingStations) {
     ordersQueue = new LinkedList<>();
     this.queueLock = new ReentrantLock(true);
     this.isQueueFull = queueLock.newCondition();
     this.isQueueEmpty = queueLock.newCondition();
+    this.processingStationsExecutor = Executors.newFixedThreadPool(howManyProcessingStations);
 
     BufferInfo bufferInfo = new BufferInfo(ordersQueue::size, MAX_BUFFER_SIZE);
     this.restaurantInfoPrinter = new RestaurantInfoPrinter(bufferInfo);
-    initProcessingStations(howManyProcessingStations, bufferInfo);
+
+    this.processingStations = Stream
+        .generate(() -> new ProcessingStation(this::remove, bufferInfo))
+        .limit(howManyProcessingStations).collect(Collectors.toList());
+    processingStations.forEach(processingStationsExecutor::submit);
   }
 
-  private void initProcessingStations(int howManyProcessingStations,
-      BufferInfo bufferInfo) {
-    Stream.generate(
-        () -> new ProcessingStation(this::remove, bufferInfo))
-        .limit(howManyProcessingStations)
-        .forEach(Thread::start);
+  public void closeRestaurant(){
+    this.processingStations.forEach(ProcessingStation::close);
+  }
+
+  public ExecutorService getProcessingStationsExecutor() {
+    return processingStationsExecutor;
   }
 
   @Override

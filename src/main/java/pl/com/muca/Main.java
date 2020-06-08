@@ -1,7 +1,10 @@
 package pl.com.muca;
 
-import static java.lang.System.exit;
-
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import pl.com.muca.restaurants.RestaurantType;
 import pl.com.muca.restaurants.restaurant.Restaurant;
@@ -25,19 +28,48 @@ class Main {
       System.out.println("Uruchamiam stanowiska w restauracji i oczekuję na zamówienia... :)");
     }
 
-    // Create restaurant of type chosen by user.
     Restaurant restaurant = initRestaurant(appParameters);
 
-    // Initialize meal order simulator.
-    initOrdersSimulator(appParameters, restaurant);
-  }
+    List<OrdersSimulator> orderSimulators =
+        Stream.generate(
+                () -> new OrdersSimulator(restaurant, appParameters.getOrdersPerSimulator()))
+            .limit(appParameters.getOrderSimulatorsNumber())
+            .collect(Collectors.toList());
+    ExecutorService simulatorsExecutor =
+        Executors.newFixedThreadPool(appParameters.getOrderSimulatorsNumber());
+    orderSimulators.forEach(simulatorsExecutor::submit);
 
-  // Initialize meal order simulator.
-  // Each simulator works in different thread.
-  private static void initOrdersSimulator(AppParameters appParameters, Restaurant restaurant) {
-    Stream.generate(() -> new OrdersSimulator(restaurant))
-        .limit(appParameters.getOrderSimulatorsNumber())
-        .forEach(s -> s.simulate(appParameters.getOrdersPerSimulator()));
+    simulatorsExecutor.shutdown();
+
+    try {
+      simulatorsExecutor.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS);
+      System.out.println(
+          "###########################################################################");
+      System.out.println("Zakończył się proces składania zamówień.");
+      System.out.println("Symulatory zamówień zostały wyłączone.");
+      System.out.println("Kończę zamówienia i zamykam stanowiska przetwarzania.");
+      System.out.println(
+          "###########################################################################");
+      System.out.println();
+      restaurant.closeRestaurant();
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+
+    ExecutorService processingStationsExecutor = restaurant.getProcessingStationsExecutor();
+    processingStationsExecutor.shutdown();
+    try {
+      processingStationsExecutor.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS);
+      System.out.println(
+          "###########################################################################");
+      System.out.println("Wszystkie zamówienia zostały zrealizowane.");
+      System.out.println("Restauracja została zamknięta.");
+      System.out.println("Zapraszamy ponownie! :)");
+      System.out.println(
+          "###########################################################################");
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
   }
 
   // Create a restaurant with processing stations.
