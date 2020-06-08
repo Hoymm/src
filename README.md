@@ -47,7 +47,7 @@ Przykładowe uruchomienie programu z parametrami:
 java -jar target/systemu_czasu_rzeczywistego-1.0.jar 3 4 5
 ```
   
-Jeżeli program zostanie uruchomiony z inną kombinacją parametrów to program automatycznie rozpocznie wczytywanie parametrów od użytkownika.
+Jeżeli program zostanie uruchomiony z inną kombinacją parametrów to automatycznie rozpocznie wczytywanie parametrów od użytkownika.
 
 <hr>
 
