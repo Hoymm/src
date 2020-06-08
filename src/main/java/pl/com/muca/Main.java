@@ -1,5 +1,7 @@
 package pl.com.muca;
 
+import static java.lang.System.exit;
+
 import java.util.stream.Stream;
 import pl.com.muca.restaurants.RestaurantType;
 import pl.com.muca.restaurants.restaurant.Restaurant;
@@ -8,10 +10,20 @@ import pl.com.muca.simulator.OrdersSimulator;
 class Main {
 
   public static void main(String[] args) {
-    // Read custom application parameters from user.
-    AppParameters appParameters = new AppParametersReader().readFromUser();
-    System.out.println(
-        "Uruchamiam stanowiska w restauracji i oczekuję na zamówienia... :)");
+    AppParameters appParameters;
+    if (args.length == 3) {
+      appParameters =
+          AppParameters.builder()
+              .setProcessingStationsNumber(Integer.parseInt(args[0]))
+              .setOrderSimulatorsNumber(Integer.parseInt(args[1]))
+              .setOrdersPerSimulator(Integer.parseInt(args[2]))
+              .setRestaurantType(RestaurantType.getRandomType())
+              .build();
+    } else {
+      // Read custom application parameters from user.
+      appParameters = new AppParametersReader().readFromUser();
+      System.out.println("Uruchamiam stanowiska w restauracji i oczekuję na zamówienia... :)");
+    }
 
     // Create restaurant of type chosen by user.
     Restaurant restaurant = initRestaurant(appParameters);
@@ -22,8 +34,7 @@ class Main {
 
   // Initialize meal order simulator.
   // Each simulator works in different thread.
-  private static void initOrdersSimulator(AppParameters appParameters,
-      Restaurant restaurant) {
+  private static void initOrdersSimulator(AppParameters appParameters, Restaurant restaurant) {
     Stream.generate(() -> new OrdersSimulator(restaurant))
         .limit(appParameters.getOrderSimulatorsNumber())
         .forEach(s -> s.simulate(appParameters.getOrdersPerSimulator()));
@@ -36,7 +47,6 @@ class Main {
   private static Restaurant initRestaurant(AppParameters appParameters) {
     int processingStationsNumber = appParameters.getProcessingStationsNumber();
     RestaurantType restaurantType = appParameters.getRestaurantType();
-    return restaurantType
-        .generateRestaurant(processingStationsNumber);
+    return restaurantType.generateRestaurant(processingStationsNumber);
   }
 }

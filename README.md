@@ -19,11 +19,36 @@ ale naszym celem była symulacja z zastosowaniem blokad.
 
 <hr>
 
-### Kompilacja oraz uruchomienie aplikacji
+## Kompilacja oraz uruchomienie aplikacji
+**Program można uruchomić na dwa sposoby.**
+#### 1. Bez parametrów
+
+W tym przypadku program pobierze parametry od użytkownika.
 ```bash
 mvn clean package
 java -jar target/systemu_czasu_rzeczywistego-1.0.jar
 ```
+
+#### 2. Z parametrami
+
+```bash
+mvn clean package
+java -jar target/systemu_czasu_rzeczywistego-1.0.jar X Y Z
+```
+<ul>
+ <li>X - liczba stanowisk przetwarzania zamówień</li>  
+ <li>Y - liczba symulatorów do składania zamówień</li>  
+ <li>Z - liczba zamówień na symulator</li>  
+</ul>
+  
+  
+Przykładowe uruchomienie programu z parametrami:
+```bash
+java -jar target/systemu_czasu_rzeczywistego-1.0.jar 3 4 5
+```
+  
+Jeżeli program zostanie uruchomiony z inną kombinacją parametrów to program automatycznie rozpocznie wczytywanie parametrów od użytkownika.
+
 <hr>
 
 ### Twórcy
