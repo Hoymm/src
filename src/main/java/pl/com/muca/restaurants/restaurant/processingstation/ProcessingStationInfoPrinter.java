@@ -58,6 +58,6 @@ public class ProcessingStationInfoPrinter {
   }
 
   private String getStationNumberInfo() {
-    return String.format("Station Number %d", this.stationNumber);
+    return String.format("Stanowisko Obsługi %d", this.stationNumber);
   }
 }

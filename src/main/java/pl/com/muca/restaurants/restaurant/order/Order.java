@@ -22,7 +22,7 @@ public class Order {
   @Override
   public String toString() {
     return String
-        .format("%s(ID:%2d) %s\nis %s%s", Colors.BBLACK, id, dishes, orderState,
+        .format("%s(ID:%2d) %s\njest %s%s", Colors.BBLACK, id, dishes, orderState,
             Colors.RESET);
   }
 

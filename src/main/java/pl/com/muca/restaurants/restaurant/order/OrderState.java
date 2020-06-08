@@ -5,9 +5,9 @@ import static pl.com.muca.common.Colors.YELLOW;
 import static pl.com.muca.common.Colors.RESET;
 
 public enum OrderState {
-  PLACED("placed"),
-  IS_BEING_PREPARED(YELLOW + "being prepared" + RESET),
-  READY_TO_PICKUP(BGREEN + "ready to pickup" + RESET);
+  PLACED("złożone"),
+  IS_BEING_PREPARED(YELLOW + "przygotowywane" + RESET),
+  READY_TO_PICKUP(BGREEN + "gotowe do odbioru" + RESET);
 
   private final String stringName;
 
